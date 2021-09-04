@@ -74,20 +74,8 @@
         </v-card>
         <v-container class="mb-8">
           <div class="text-h6">Selected Cards</div>
-          <v-row>
-            <v-col
-              v-for="(card, i) in pickedCards"
-              cols="2"
-              :key="i"
-              @click="deselectCard(i)"
-            >
-              <v-img :src="card.img">
-                <template v-slot:placeholder>
-                  <v-progress-circular indeterminate size="lg" />
-                </template>
-              </v-img>
-            </v-col>
-          </v-row>
+          <div class="text-caption">Click cards to remove</div>
+          <card-grid :cards="pickedCards" @click="deselectCard" />
         </v-container>
 
         <v-expansion-panels>
@@ -96,18 +84,7 @@
               Filtered Cards ({{ filteredCards.length }})
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-row>
-                <v-col
-                  cols="2"
-                  v-for="(card, i) in filteredCards"
-                  :key="i"
-                  @click="selectCard(i)"
-                >
-                  <v-img :src="card.img">
-
-                  </v-img>
-                </v-col>
-              </v-row>
+              <card-grid :cards="filteredCards" @click="selectCard" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -118,10 +95,13 @@
 
 <script>
 import { filterCards } from "./cards.service";
+import CardGrid from "./components/CardGrid.vue";
 
 export default {
   name: "App",
-
+  components: {
+    CardGrid,
+  },
   data: () => ({
     options: {
       regions: [
