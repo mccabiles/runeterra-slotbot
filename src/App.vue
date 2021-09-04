@@ -1,7 +1,20 @@
 <template>
   <v-app dark>
-    <v-app-bar app color="primary" dark>
-      Slotbot: LOR Randomizer
+    <v-app-bar app color="deep-purple darken" dark>
+      <div>
+        <div class="text-h6">Slotbot</div>
+        <div class="text-caption"> A Legends of Runeterra Randomizer </div>
+      </div>
+      <v-spacer />
+      <div class="text-caption text-right">
+        <div>
+          Made with ♥ by
+          <a class="white--text" href="https://twitter.com/Jzolago">Jzolago</a>
+        </div>
+        <div>
+          Send me a <a class="white--text" href="https://ko-fi.com/jzolago">Ko-fi</a>!
+        </div>
+      </div>
     </v-app-bar>
 
     <v-main dark>
@@ -70,24 +83,37 @@
             <v-btn color="primary" @click="getRandomCards">
               Randomize!
             </v-btn>
+            <v-btn color="gray" text @click="reset">
+              Reset Filters
+            </v-btn>
           </v-card-actions>
         </v-card>
-        <v-container class="mb-8">
-          <div class="text-h6">Selected Cards</div>
-          <div class="text-caption">Click cards to remove</div>
-          <card-grid :cards="pickedCards" @click="deselectCard" />
-        </v-container>
 
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              Filtered Cards ({{ filteredCards.length }})
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <card-grid :cards="filteredCards" @click="selectCard" />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <div v-if="loading" class="d-flex justify-center my-8">
+          <div class="d-flex flex-column align-center">
+            <v-progress-circular indeterminate :size="50" color="primary" />
+            <div class="text-body-2"> Randomizing... </div>
+          </div>
+        </div>
+
+        <template v-else>
+          <v-container class="mb-8" v-if="pickedCards.length">
+            <div class="text-h6">Selected Cards</div>
+            <div class="text-caption">Click cards to remove</div>
+            <card-grid :cards="pickedCards" @click="deselectCard" />
+          </v-container>
+
+          <v-expansion-panels v-if="filteredCards.length">
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                Filtered Cards ({{ filteredCards.length }})
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <card-grid :cards="filteredCards" @click="selectCard" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </template>
       </v-container>
     </v-main>
   </v-app>
@@ -103,6 +129,7 @@ export default {
     CardGrid,
   },
   data: () => ({
+    loading: false,
     options: {
       regions: [
         "Bilgewater",
@@ -130,6 +157,8 @@ export default {
 
   methods: {
     getRandomCards() {
+      this.loading = true;
+      setTimeout(() => { this.loading = false }, 3000);
       const filtered = filterCards({
         regions: this.regions,
         types: this.types,
@@ -149,6 +178,12 @@ export default {
     selectCard(index) {
       this.pickedCards.push(this.filteredCards[index]);
     },
+    reset() {
+      this.regions = Object.assign({}, {});
+      this.mana = Object.assign({}, {});
+      this.types = Object.assign({}, {});
+      this.rarities = Object.assign({}, {});
+    }
   },
 };
 </script>
