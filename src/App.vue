@@ -123,6 +123,7 @@
 import { filterCards } from "./cards.service";
 import CardGrid from "./components/CardGrid.vue";
 
+const randomize = () => 0.5 - Math.random(); 
 export default {
   name: "App",
   components: {
@@ -169,7 +170,7 @@ export default {
 
       this.filteredCards = [...filtered];
       this.pickedCards = [
-        ...filtered.sort(() => 0.5 - Math.random()).slice(0, this.count),
+        ...filtered.sort(randomize).sort(randomize).slice(0, this.count),
       ];
     },
     deselectCard(index) {
