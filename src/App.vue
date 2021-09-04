@@ -97,13 +97,13 @@
         </div>
 
         <template v-else>
-          <v-container class="mb-8" v-if="pickedCards.length">
+          <v-container class="mb-8">
             <div class="text-h6">Selected Cards</div>
             <div class="text-caption">Click cards to remove</div>
             <card-grid :cards="pickedCards" @click="deselectCard" />
           </v-container>
 
-          <v-expansion-panels v-if="filteredCards.length">
+          <v-expansion-panels>
             <v-expansion-panel>
               <v-expansion-panel-header>
                 Filtered Cards ({{ filteredCards.length }})
