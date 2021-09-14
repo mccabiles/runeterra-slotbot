@@ -1,5 +1,7 @@
 # lor-slotbot
 
+Live: https://lor-slotbot.netlify.app/
+
 ## Project setup
 ```
 yarn install
